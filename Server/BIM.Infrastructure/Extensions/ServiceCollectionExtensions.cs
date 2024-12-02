@@ -1,4 +1,5 @@
 ﻿using BIM.Infrastructure.Persistence;
+using BIM.Infrastructure.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,5 +14,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<BIMDbContext>(options =>
             options.UseSqlServer(connectionString)
             .EnableSensitiveDataLogging());
+
+        services.AddScoped<IBookSeeder, BookSeeder>();
     }
 }
