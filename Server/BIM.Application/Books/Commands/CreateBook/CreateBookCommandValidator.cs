@@ -1,12 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
-namespace BIM.Application.Books.Commands.CreateBook
+namespace BIM.Application.Books.Commands.CreateBook;
+
+public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
 {
-    internal class CreateBookCommandValidator
+    private readonly List<string> AllowedGenres = [ "Fiction", "Non-Fiction", "Science", "Biography", "Fantasy" ];
+
+    public CreateBookCommandValidator()
     {
+        RuleFor(dto => dto.Title)
+            .NotEmpty().WithMessage("Title is required.")
+            .MaximumLength(100).WithMessage("Title must not exceed 100 characters.");
+
+        RuleFor(dto => dto.Author)
+            .NotEmpty().WithMessage("Author is required.")
+            .MaximumLength(50).WithMessage("Author name must not exceed 50 characters.");
+
+        RuleFor(dto => dto.Genre)
+            .NotEmpty().WithMessage("Genre is required.")
+            .Must(genre => AllowedGenres.Contains(genre))
+            .WithMessage("Invalid genre. Allowed genres are: Fiction, Non-Fiction, Science, Biography, Fantasy.");
+
+        RuleFor(dto => dto.ISBN)
+            .NotEmpty().WithMessage("ISBN is required.")
+            .Matches(@"^\d{13}$").WithMessage("ISBN must be exactly 13 digits."); // Regex for 13-digit ISBN
+
+        RuleFor(dto => dto.PublishedDate)
+            .LessThanOrEqualTo(DateTime.Now).WithMessage("Published date cannot be in the future.");
+
+        RuleFor(dto => dto.Quantity)
+            .GreaterThanOrEqualTo(0).WithMessage("Quantity cannot be negative.");
     }
 }

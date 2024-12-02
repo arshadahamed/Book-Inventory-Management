@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
-namespace BIM.Application.Books.Commands.DeleteBook
+namespace BIM.Application.Books.Commands.DeleteBook;
+
+public class DeleteBookCommand(int id) : IRequest
 {
-    internal class DeleteBookCommand
-    {
-    }
+    public int Id { get; } = id;
 }
