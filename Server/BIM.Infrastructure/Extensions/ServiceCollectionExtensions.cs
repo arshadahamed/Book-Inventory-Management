@@ -1,4 +1,8 @@
-﻿using BIM.Infrastructure.Persistence;
+﻿using BIM.Domain.Interfaces;
+using BIM.Domain.Respositories;
+using BIM.Infrastructure.Authorization.Services;
+using BIM.Infrastructure.Persistence;
+using BIM.Infrastructure.Repositories;
 using BIM.Infrastructure.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,5 +20,9 @@ public static class ServiceCollectionExtensions
             .EnableSensitiveDataLogging());
 
         services.AddScoped<IBookSeeder, BookSeeder>();
+        services.AddScoped<IBooksRepository, BooksRepository>();
+
+        services.AddScoped<IBookAuthorizationService, BookAuthorizationService>();
+
     }
 }

@@ -1,3 +1,5 @@
+using BIM.API.Extensions;
+using BIM.Application.Extensions;
 using BIM.Infrastructure.Extensions;
 using BIM.Infrastructure.Seeders;
 
@@ -5,10 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-
+builder.AddPresentation();
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-
-builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -18,6 +19,11 @@ var seeder = scope.ServiceProvider.GetRequiredService<IBookSeeder>();
 await seeder.Seed();
 
 // Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 
