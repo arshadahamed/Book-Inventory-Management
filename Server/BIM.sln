@@ -5,6 +5,12 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIM.API", "BIM.API\BIM.API.csproj", "{7D7DAED9-DE43-429C-998F-2014B24971E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIM.Domain", "BIM.Domain\BIM.Domain.csproj", "{385360E1-E08A-4E2E-9D9F-7A7FA44D8AD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIM.Application", "BIM.Application\BIM.Application.csproj", "{0A2F9F3C-AD98-4BCC-9387-7D21E82DA21F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIM.Infrastructure", "BIM.Infrastructure\BIM.Infrastructure.csproj", "{994A969B-378C-4494-99A5-E2CC0E8B303B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +21,23 @@ Global
 		{7D7DAED9-DE43-429C-998F-2014B24971E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D7DAED9-DE43-429C-998F-2014B24971E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D7DAED9-DE43-429C-998F-2014B24971E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{385360E1-E08A-4E2E-9D9F-7A7FA44D8AD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{385360E1-E08A-4E2E-9D9F-7A7FA44D8AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{385360E1-E08A-4E2E-9D9F-7A7FA44D8AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{385360E1-E08A-4E2E-9D9F-7A7FA44D8AD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A2F9F3C-AD98-4BCC-9387-7D21E82DA21F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A2F9F3C-AD98-4BCC-9387-7D21E82DA21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A2F9F3C-AD98-4BCC-9387-7D21E82DA21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A2F9F3C-AD98-4BCC-9387-7D21E82DA21F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{994A969B-378C-4494-99A5-E2CC0E8B303B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{994A969B-378C-4494-99A5-E2CC0E8B303B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{994A969B-378C-4494-99A5-E2CC0E8B303B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{994A969B-378C-4494-99A5-E2CC0E8B303B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A9728890-FACB-43CB-B1ED-B068F40B2149}
 	EndGlobalSection
 EndGlobal
