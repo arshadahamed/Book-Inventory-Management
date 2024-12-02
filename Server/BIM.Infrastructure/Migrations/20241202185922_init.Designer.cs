@@ -13,7 +13,7 @@ namespace BIM.Infrastructure.Migrations
 {
     [DbContext(typeof(BIMDbContext))]
     [Migration("20241202185922_init")]
-    partial class init
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
