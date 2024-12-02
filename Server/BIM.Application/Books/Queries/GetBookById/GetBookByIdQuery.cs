@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BIM.Application.Books.Dtos;
+using MediatR;
 
-namespace BIM.Application.Books.Queries.GetBookById
+namespace BIM.Application.Books.Queries.GetBookById;
+
+public class GetBookByIdQuery(int id) : IRequest<BookDto>
 {
-    internal class GetBookByIdQuery
-    {
-    }
+    public int Id { get; set; } = id;
 }
