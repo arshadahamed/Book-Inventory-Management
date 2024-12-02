@@ -11,7 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BIM.Application\BIM.Application.csproj" />
+    <ProjectReference Include="..\BIM.Infrastructure\BIM.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
