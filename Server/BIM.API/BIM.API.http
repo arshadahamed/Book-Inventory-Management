@@ -1,0 +1,6 @@
+@BIM.API_HostAddress = http://localhost:5280
+
+GET {{BIM.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
