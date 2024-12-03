@@ -48,14 +48,12 @@ GET {{BIM.API_HostAddress}}/api/books/matching?searchPharse=Man&pageSize=5&pageN
 GET {{BIM.API_HostAddress}}/api/books/search?keywords=Ar
 ###
 
-PATCH {{BIM.API_HostAddress}}/api/books/1
+PATCH {{BIM.API_HostAddress}}/api/books/5
 Content-Type: application/json
 {
-  "title": "The darling",
-  "author": "New Author",   
-  "genre": "New Genre",
-  "isbn": "1234567890"
+  "author": "Super Man"
 }
+
 
 
 ###

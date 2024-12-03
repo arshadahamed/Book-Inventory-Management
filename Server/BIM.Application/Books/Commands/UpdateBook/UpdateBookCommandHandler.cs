@@ -15,30 +15,42 @@ public class UpdateBookCommandHandler(
 {
     public async Task Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
-        try
+        // Retrieve the book from the repository by Id
+        var book = await booksRepository.GetByIdAsync(request.Id);
+        if (book == null)
         {
-            var book = await booksRepository.GetByIdAsync(request.Id);
-            if (book is null)
-            {
-                //logger.LogError($"Book with Id {request.Id} not found.");
-                throw new NotFoundException(nameof(Book), request.Id.ToString());
-            }
-
-            if (!bookAuthorizationService.Authorize(book, ResourceOperation.Update))
-            {
-                //logger.LogWarning($"Unauthorized attempt to update book with Id {request.Id}.");
-                throw new ForbidException();
-            }
-
-            mapper.Map(request, book);
-
-            await booksRepository.Update(book);  // Pass the book to the update method
-            //logger.LogInformation($"Book with Id {request.Id} successfully updated.");
+            throw new NotFoundException(nameof(Book), request.Id.ToString());
         }
-        catch (Exception ex)
+
+        // Check authorization for updating the book
+        if (!bookAuthorizationService.Authorize(book, ResourceOperation.Update))
         {
-            //logger.LogError(ex, "Error while updating the book.");
-            throw ;  // Re-throw the exception after logging it
+            throw new ForbidException();
         }
+
+        // Update only the fields provided in the request
+        // Null checks are unnecessary for nullable types, so only assign if not null
+        if (request.Title != null)
+        {
+            book.Title = request.Title;
+        }
+
+        if (request.Author != null)
+        {
+            book.Author = request.Author;
+        }
+
+        if (request.Genre != null)
+        {
+            book.Genre = request.Genre;
+        }
+
+        if (request.ISBN != null)
+        {
+            book.ISBN = request.ISBN;
+        }
+
+        // Update in the repository (saving changes)
+        await booksRepository.Update(book);
     }
 }
