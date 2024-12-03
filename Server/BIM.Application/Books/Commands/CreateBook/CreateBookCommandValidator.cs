@@ -4,7 +4,7 @@ namespace BIM.Application.Books.Commands.CreateBook;
 
 public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
 {
-    private readonly List<string> AllowedGenres = [ "Fiction", "Non-Fiction", "Science", "Biography", "Fantasy" ];
+    private readonly List<string> AllowedGenres = new List<string> { "Fiction", "Non-Fiction", "Science", "Biography", "Fantasy" };
 
     public CreateBookCommandValidator()
     {
@@ -23,7 +23,7 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
 
         RuleFor(dto => dto.ISBN)
             .NotEmpty().WithMessage("ISBN is required.")
-            .Matches(@"^\d{13}$").WithMessage("ISBN must be exactly 13 digits."); // Regex for 13-digit ISBN
+            .Matches(@"^\d{13}$").WithMessage("ISBN must be exactly 13 digits.");
 
         RuleFor(dto => dto.PublishedDate)
             .LessThanOrEqualTo(DateTime.Now).WithMessage("Published date cannot be in the future.");
