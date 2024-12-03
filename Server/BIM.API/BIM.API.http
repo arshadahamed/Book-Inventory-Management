@@ -10,13 +10,13 @@ POST {{BIM.API_HostAddress}}/api/books
 Content-Type: application/json
 
 {
-      "title": "The Man",
-      "author": "Arshad Ahamed",
+      "title": "The WomanMan",
+      "author": "Ansak Ahamed",
       "genre": "Classic Fiction",
-      "isbn": "9780743273575",
-      "publishedDate": "1935-04-10T00:00:00",
-      "price": 1100.00,
-      "quantity": 10
+      "isbn": "9780743273215",
+      "publishedDate": "1965-04-10T00:00:00",
+      "price": 1500.00,
+      "quantity": 12
 }
 
 ###
@@ -29,11 +29,11 @@ DELETE {{BIM.API_HostAddress}}/api/books/3
 
 ###
 
-PATCH {{BIM.API_HostAddress}}/api/books/3
+PATCH {{BIM.API_HostAddress}}/api/books/5
 Content-Type: application/json
 
 {
-      "title": "The Man"
+      "title": "The Over Man"
       "isbn": "9780743273575",
     
 }
@@ -47,3 +47,16 @@ GET {{BIM.API_HostAddress}}/api/books/matching?searchPharse=Man&pageSize=5&pageN
 
 GET {{BIM.API_HostAddress}}/api/books/search?keywords=Ar
 ###
+
+PATCH {{BIM.API_HostAddress}}/api/books/1
+Content-Type: application/json
+{
+  "title": "The darling",
+  "author": "New Author",   
+  "genre": "New Genre",
+  "isbn": "1234567890"
+}
+
+
+###
+

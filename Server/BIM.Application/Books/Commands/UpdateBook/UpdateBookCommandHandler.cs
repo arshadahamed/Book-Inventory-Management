@@ -15,15 +15,30 @@ public class UpdateBookCommandHandler(
 {
     public async Task Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
-        var book = await booksRepository.GetByIdAsync(request.Id);
-        if (book is null)
-            throw new NotFoundException(nameof(Book), request.Id.ToString());
+        try
+        {
+            var book = await booksRepository.GetByIdAsync(request.Id);
+            if (book is null)
+            {
+                //logger.LogError($"Book with Id {request.Id} not found.");
+                throw new NotFoundException(nameof(Book), request.Id.ToString());
+            }
 
-        if (!bookAuthorizationService.Authorize(book, ResourceOperation.Update))
-            throw new ForbidException();
+            if (!bookAuthorizationService.Authorize(book, ResourceOperation.Update))
+            {
+                //logger.LogWarning($"Unauthorized attempt to update book with Id {request.Id}.");
+                throw new ForbidException();
+            }
 
-        mapper.Map(request, book);
+            mapper.Map(request, book);
 
-        await booksRepository.Update();
+            await booksRepository.Update(book);  // Pass the book to the update method
+            //logger.LogInformation($"Book with Id {request.Id} successfully updated.");
+        }
+        catch (Exception ex)
+        {
+            //logger.LogError(ex, "Error while updating the book.");
+            throw ;  // Re-throw the exception after logging it
+        }
     }
 }

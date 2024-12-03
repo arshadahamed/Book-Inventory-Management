@@ -6,6 +6,7 @@ using BIM.Application.Books.Queries.GetAllBooks;
 using BIM.Application.Books.Queries.GetAllMatching;
 using BIM.Application.Books.Queries.GetBookById;
 using BIM.Application.Books.Queries.SearchBooks;
+using BIM.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,11 +42,25 @@ public class BookController(IMediator mediator) : ControllerBase
     [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> UpdateBook([FromRoute] int id, [FromBody] UpdateBookCommand command)
     {
         command.Id = id;
-        await mediator.Send(command);
-        return NoContent();
+
+        try
+        {
+            await mediator.Send(command);  
+
+            return NoContent();  
+        }
+        catch (NotFoundException)
+        {
+            return NotFound();  
+        }
+        catch (ForbidException)
+        {
+            return Forbid();  
+        }
     }
 
     [HttpDelete("{id}")]

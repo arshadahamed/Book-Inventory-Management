@@ -37,9 +37,6 @@ internal class BooksRepository(BIMDbContext dbContext) : IBooksRepository
         return book;
     }
 
-    public Task Update()
-     => dbContext.SaveChangesAsync();
-
     public async Task<(IEnumerable<Book>, int)> GetAllMatchingAsync(string? searchPharse, int pageSize, int pageNumber, string? sortBy, SortDirection sortDirection)
     {
             var searchPharseLower = searchPharse?.ToLower();
@@ -98,5 +95,11 @@ internal class BooksRepository(BIMDbContext dbContext) : IBooksRepository
         }
 
         return await query.ToListAsync();
+    }
+
+    public async Task Update(Book book)
+    {
+        dbContext.Books.Update(book);  
+        await dbContext.SaveChangesAsync();
     }
 }
