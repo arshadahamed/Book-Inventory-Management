@@ -1,15 +1,16 @@
 ﻿using BIM.Application.Books.Dtos;
+using BIM.Application.Books.Queries.GetAllBooks;
 using FluentValidation;
 
-namespace BIM.Application.Books.Queries.GetAllBooks;
+namespace BIM.Application.Books.Queries.GetAllMatching;
 
-public class GetAllBooksQueryValidator : AbstractValidator<GetAllBooksQuery>
+public class GetAllMatchingQueryValidator : AbstractValidator<GetAllMatchingQuery>
 {
     private int[] allowPageSizes = [5, 10, 15, 30];
     private string[] allowedSortByColumnNames = [nameof(BookDto.Title),
                 nameof(BookDto.Genre),
                 nameof(BookDto.Author)];
-    public GetAllBooksQueryValidator()
+    public GetAllMatchingQueryValidator()
     {
 
         RuleFor(r => r.PageNumber)
@@ -25,3 +26,4 @@ public class GetAllBooksQueryValidator : AbstractValidator<GetAllBooksQuery>
             .WithMessage($"Sort by is optional, or must be in [{string.Join(",", allowedSortByColumnNames)}]");
     }
 }
+

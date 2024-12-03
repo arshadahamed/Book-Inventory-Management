@@ -3,12 +3,12 @@ using BIM.Application.Books.Commands.DeleteBook;
 using BIM.Application.Books.Commands.UpdateBook;
 using BIM.Application.Books.Dtos;
 using BIM.Application.Books.Queries.GetAllBooks;
+using BIM.Application.Books.Queries.GetAllMatching;
 using BIM.Application.Books.Queries.GetBookById;
+using BIM.Application.Books.Queries.SearchBooks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-namespace BIM.API.Controllers;
 
 [ApiController]
 [Route("api/books")]
@@ -16,7 +16,16 @@ public class BookController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<BookDto>>> GetAll([FromQuery] GetAllBooksQuery query)
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetAll()
+    {
+        var query = new GetAllBooksQuery();
+        var books = await mediator.Send(query);
+        return Ok(books);
+    }
+
+    [HttpGet("matching")]
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetAllMatching([FromQuery] GetAllMatchingQuery query)
     {
         var books = await mediator.Send(query);
         return Ok(books);
@@ -29,16 +38,13 @@ public class BookController(IMediator mediator) : ControllerBase
         return Ok(book);
     }
 
-
-
     [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateBook([FromRoute] int id, UpdateBookCommand command)
+    public async Task<IActionResult> UpdateBook([FromRoute] int id, [FromBody] UpdateBookCommand command)
     {
         command.Id = id;
         await mediator.Send(command);
-
         return NoContent();
     }
 
@@ -48,15 +54,27 @@ public class BookController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> DeleteBook([FromRoute] int id)
     {
         await mediator.Send(new DeleteBookCommand(id));
-
         return NoContent();
     }
-
 
     [HttpPost]
     public async Task<IActionResult> CreateBook([FromBody] CreateBookCommand command)
     {
         int id = await mediator.Send(command);
         return CreatedAtAction(nameof(GetById), new { id }, null);
+    }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchBooks([FromQuery] string? keywords, [FromQuery] string? author, [FromQuery] string? genre)
+    {
+        var query = new SearchBooksQuery
+        {
+            Keywords = keywords,
+            Author = author,
+            Genre = genre
+        };
+
+        var result = await mediator.Send(query);
+        return Ok(result);
     }
 }

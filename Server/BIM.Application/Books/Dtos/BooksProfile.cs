@@ -11,7 +11,7 @@ public class BooksProfile : Profile
     {
         CreateMap<UpdateBookCommand, Book>();
         CreateMap<CreateBookCommand, Book>();
-
         CreateMap<Book, BookDto>();
+
     }
 }

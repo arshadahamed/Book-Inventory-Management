@@ -2,6 +2,8 @@
 
 
 
+GET {{BIM.API_HostAddress}}/api/books
+
 ###
 
 POST {{BIM.API_HostAddress}}/api/books
@@ -19,25 +21,29 @@ Content-Type: application/json
 
 ###
 
-GET {{BIM.API_HostAddress}}/api/books
-###
-GET {{BIM.API_HostAddress}}/api/books?searchPharse=&pageSize=5&pageNumber=1
+GET {{BIM.API_HostAddress}}/api/books/1
 
 ###
 
-GET {{BIM.API_HostAddress}}/api/books/2
+DELETE {{BIM.API_HostAddress}}/api/books/3
 
 ###
 
-DELETE {{BIM.API_HostAddress}}/api/books/2
-
-###
-
-PATCH {{BIM.API_HostAddress}}/api/books/{id}
+PATCH {{BIM.API_HostAddress}}/api/books/3
 Content-Type: application/json
 
 {
-  //UpdateBookCommand
+      "title": "The Man"
+      "isbn": "9780743273575",
+    
 }
 
+###
+
+GET {{BIM.API_HostAddress}}/api/books/matching?searchPharse=Man&pageSize=5&pageNumber=1
+
+###
+
+
+GET {{BIM.API_HostAddress}}/api/books/search?keywords=Ar
 ###
