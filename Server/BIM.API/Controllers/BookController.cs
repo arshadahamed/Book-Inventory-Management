@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/books")]
+[Authorize]
 public class BookController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
@@ -40,6 +41,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -64,6 +66,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBook([FromRoute] int id)
@@ -80,6 +83,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("search")]
+    [AllowAnonymous]
     public async Task<IActionResult> SearchBooks([FromQuery] string? keywords, [FromQuery] string? author, [FromQuery] string? genre)
     {
         var query = new SearchBooksQuery

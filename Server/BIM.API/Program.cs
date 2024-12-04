@@ -1,24 +1,30 @@
 using BIM.API.Extensions;
+using BIM.API.Middlewares;
 using BIM.Application.Extensions;
 using BIM.Infrastructure.Extensions;
-using BIM.Infrastructure.Seeders;
+using MIN.API.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+// Seed roles during startup
 var scope = app.Services.CreateScope();
-var seeder = scope.ServiceProvider.GetRequiredService<IBookSeeder>();
+var roleSeeder = scope.ServiceProvider.GetRequiredService<RoleSeeder>();
+await roleSeeder.SeedRolesAsync();
 
-await seeder.Seed();
+// Use custom middlewares
+app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<RequestTimeLoggingMiddleware>();
+app.UseSerilogRequestLogging();
 
-// Configure the HTTP request pipeline.
+// HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -27,7 +33,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseAuthentication(); 
+
+app.UseAuthorization(); 
 
 app.MapControllers();
 

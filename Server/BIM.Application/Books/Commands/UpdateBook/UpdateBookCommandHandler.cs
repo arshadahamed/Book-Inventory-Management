@@ -11,8 +11,8 @@ namespace BIM.Application.Books.Commands.UpdateBook;
 
 public class UpdateBookCommandHandler(ILogger<UpdateBookCommandHandler> logger,
     IBooksRepository booksRepository,
-    IBookAuthorizationService bookAuthorizationService,
-    IMapper mapper) : IRequestHandler<UpdateBookCommand>
+    IBookAuthorizationService bookAuthorizationService
+    ) : IRequestHandler<UpdateBookCommand>
 {
     public async Task Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {

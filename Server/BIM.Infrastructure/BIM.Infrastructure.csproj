@@ -14,4 +14,8 @@
     <ProjectReference Include="..\BIM.Application\BIM.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+
 </Project>
