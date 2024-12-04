@@ -23,10 +23,10 @@ namespace MIN.API.Middlewares
             {
                 context.Response.StatusCode = 404;
                 context.Response.ContentType = "application/json";
-                var response = new { message = notFound.Message };
+                var response = new { message = notFound.Message, details = "Resource not found" };
                 await context.Response.WriteAsJsonAsync(response);
 
-                _logger.LogWarning(notFound.Message);
+                _logger.LogError(notFound, notFound.Message);
             }
             catch (ForbidException forbid)
             {
@@ -35,7 +35,7 @@ namespace MIN.API.Middlewares
                 var response = new { message = "Access forbidden", details = forbid.Message };
                 await context.Response.WriteAsJsonAsync(response);
 
-                _logger.LogWarning(forbid.Message);
+                _logger.LogError(forbid, forbid.Message);
             }
             catch (Exception ex)
             {
@@ -43,7 +43,7 @@ namespace MIN.API.Middlewares
 
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";
-                var response = new { message = "Something went wrong", error = ex.Message };
+                var response = new { message = "Something went wrong", details = ex.Message };
                 await context.Response.WriteAsJsonAsync(response);
             }
         }

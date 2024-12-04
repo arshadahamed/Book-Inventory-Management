@@ -13,11 +13,11 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/books")]
-[Authorize]
 public class BookController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    [AllowAnonymous]
+    
+    //[AllowAnonymous]
     public async Task<ActionResult<IEnumerable<BookDto>>> GetAll()
     {
         var query = new GetAllBooksQuery();
@@ -34,6 +34,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<BookDto>> GetById([FromRoute] int id)
     {
         var book = await mediator.Send(new GetBookByIdQuery(id));
@@ -76,6 +77,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateBook([FromBody] CreateBookCommand command)
     {
         int id = await mediator.Send(command);

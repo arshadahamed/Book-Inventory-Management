@@ -33,6 +33,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.Use(async (context, next) =>
+{
+    Console.WriteLine("Authentication started.");
+    await next.Invoke();
+    Console.WriteLine("Authentication completed.");
+});
+
+app.UseAuthentication();
 app.UseAuthentication(); 
 
 app.UseAuthorization(); 
