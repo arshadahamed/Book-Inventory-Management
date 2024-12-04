@@ -1,5 +1,4 @@
-﻿using BIM.Application.User.Dtos;
-using BIM.Domain.Entities.Model;
+﻿using BIM.Domain.Entities.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -114,25 +113,25 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("assign-role")]
-    public async Task<IActionResult> AssignRole([FromBody] UserRoleDto userRoleDto)
+    public async Task<IActionResult> AssignRole([FromBody] UserRole userRole)
     {
-        var user = await _userManager.FindByNameAsync(userRoleDto.Username);
+        var user = await _userManager.FindByNameAsync(userRole.Username);
 
         if (user == null)
         {
             return BadRequest(new { message = "User not found." });
         }
 
-        if (!await _roleManager.RoleExistsAsync(userRoleDto.Role))
+        if (!await _roleManager.RoleExistsAsync(userRole.Role))
         {
-            return BadRequest(new { message = $"Role '{userRoleDto.Role}' does not exist." });
+            return BadRequest(new { message = $"Role '{userRole.Role}' does not exist." });
         }
 
-        var result = await _userManager.AddToRoleAsync(user, userRoleDto.Role);
+        var result = await _userManager.AddToRoleAsync(user, userRole.Role);
 
         if (result.Succeeded)
         {
-            return Ok(new { message = $"Role '{userRoleDto.Role}' assigned to user '{userRoleDto.Username}' successfully." });
+            return Ok(new { message = $"Role '{userRole.Role}' assigned to user '{userRole.Username}' successfully." });
         }
 
         var errors = result.Errors.Select(e => e.Description).ToList();
