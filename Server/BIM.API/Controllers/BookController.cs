@@ -11,13 +11,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 [ApiController]
 [Route("api/books")]
 public class BookController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<BookDto>>> GetAll()
     {
         var query = new GetAllBooksQuery();
@@ -33,8 +33,9 @@ public class BookController(IMediator mediator) : ControllerBase
         return Ok(books);
     }
 
+
     [HttpGet("{id}")]
-    [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<BookDto>> GetById([FromRoute] int id)
     {
         var book = await mediator.Send(new GetBookByIdQuery(id));
@@ -42,7 +43,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch("{id}")]
-    [Authorize(Policy = "AdminPolicy")]
+    //[Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -67,7 +68,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = "AdminPolicy")]
+    //[Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBook([FromRoute] int id)

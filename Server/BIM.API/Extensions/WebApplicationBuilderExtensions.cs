@@ -10,8 +10,6 @@ public static class WebApplicationBuilderExtensions
 {
     public static void AddPresentation(this WebApplicationBuilder builder)
     {
-        // Configure Authentication and Controllers
-        builder.Services.AddAuthentication();
         builder.Services.AddControllers();
         builder.Services.AddSwaggerGen(configuration =>
         {

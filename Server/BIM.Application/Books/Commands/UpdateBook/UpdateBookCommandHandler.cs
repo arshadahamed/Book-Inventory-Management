@@ -1,8 +1,5 @@
-﻿using AutoMapper;
-using BIM.Domain.Contants;
-using BIM.Domain.Entities;
+﻿using BIM.Domain.Entities;
 using BIM.Domain.Exceptions;
-using BIM.Domain.Interfaces;
 using BIM.Domain.Respositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -10,8 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace BIM.Application.Books.Commands.UpdateBook;
 
 public class UpdateBookCommandHandler(ILogger<UpdateBookCommandHandler> logger,
-    IBooksRepository booksRepository,
-    IBookAuthorizationService bookAuthorizationService
+    IBooksRepository booksRepository
     ) : IRequestHandler<UpdateBookCommand>
 {
     public async Task Handle(UpdateBookCommand request, CancellationToken cancellationToken)
@@ -25,19 +21,6 @@ public class UpdateBookCommandHandler(ILogger<UpdateBookCommandHandler> logger,
             logger.LogWarning("Book with Id {BookId} not found.", request.Id);
             throw new NotFoundException(nameof(Book), request.Id.ToString());
         }
-
-
-        logger.LogInformation("Found Book with Id {BookId}, checking authorization to update.", request.Id);
-
-        if (!bookAuthorizationService.Authorize(book, ResourceOperation.Update))
-        {
-            logger.LogWarning("Unauthorized attempt to update Book with Id {BookId}.", request.Id);
-            throw new ForbidException();
-        }
-
-
-        logger.LogInformation("Authorized update for Book with Id {BookId}. Updating fields.", request.Id);
-
 
         if (request.Title != null)
         {

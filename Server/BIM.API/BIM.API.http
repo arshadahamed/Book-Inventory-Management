@@ -1,7 +1,5 @@
 @BIM.API_HostAddress = https://localhost:7209
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBZG1pbiIsImp0aSI6IjUxMzI2MTg4LTQwOGMtNGQ3Mi1hYzY3LTY4Y2IzZWIzYTgzOSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzMzNTMyMzAwLCJpc3MiOiJKd3RJc3N1ZXIifQ.ORQapFsPMguDnUwji8hRKx7sxk0r0VD9no0dN-lC4Qs
-
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBZG1pbiIsImp0aSI6ImNlZDA4ZGMxLWUwZDItNDAyMi04ZWExLTIzNzc5N2E1YjhjYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzMzNTQ3NzI4LCJpc3MiOiJGcmVlVHJhaW5lZCJ9.swXOz_L-9zxkGe0BzTSvN1bkK40P4OADeKK_MPyXrPM
 
 GET {{BIM.API_HostAddress}}/api/books
 
@@ -11,32 +9,32 @@ POST {{BIM.API_HostAddress}}/api/books
 Content-Type: application/json
 
 {
-      "title": "The Hunk",
-      "author": "Ajas Ahamed",
+      "title": "The Thor",
+      "author": "Anees Ahamed",
       "genre": "Fiction",
-      "isbn": "9780743273215",
-      "publishedDate": "1965-04-10T00:00:00",
-      "price": 1500.00,
-      "quantity": 12
+      "isbn": "9980743273215",
+      "publishedDate": "1999-04-10T00:00:00",
+      "price": 1509.00,
+      "quantity": 19
 }
 
 ###
 
-GET {{BIM.API_HostAddress}}/api/books/1
-Authorization: Bearer {{token}}
+GET {{BIM.API_HostAddress}}/api/books/4
+Authorization : Bearer {{token}}
 
 ###
 
-DELETE {{BIM.API_HostAddress}}/api/books/3
+DELETE {{BIM.API_HostAddress}}/api/books/1008
 
 ###
 
-PATCH {{BIM.API_HostAddress}}/api/books/5
+PATCH {{BIM.API_HostAddress}}/api/books/1
 Content-Type: application/json
 
 {
-      "title": "The Over Man"
-      "isbn": "9780743273575",
+      "title": "The One Man"
+     
     
 }
 
