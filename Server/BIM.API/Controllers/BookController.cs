@@ -34,7 +34,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<ActionResult<BookDto>> GetById([FromRoute] int id)
     {
         var book = await mediator.Send(new GetBookByIdQuery(id));
@@ -42,7 +42,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch("{id}")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -67,7 +67,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBook([FromRoute] int id)
@@ -77,7 +77,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
+    //[Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> CreateBook([FromBody] CreateBookCommand command)
     {
         int id = await mediator.Send(command);

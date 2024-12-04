@@ -40,7 +40,7 @@ app.Use(async (context, next) =>
     Console.WriteLine("Authentication completed.");
 });
 
-app.UseAuthentication();
+
 app.UseAuthentication(); 
 
 app.UseAuthorization(); 
