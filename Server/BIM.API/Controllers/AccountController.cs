@@ -1,4 +1,5 @@
 ﻿using BIM.Domain.Entities.Model;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -8,6 +9,7 @@ using System.Text;
 
 namespace BIM.API.Controllers;
 
+[EnableCors("AllowAll")]
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
@@ -42,7 +44,7 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Login([FromBody] Login model)
     {
         // Find user by username
-        var user = await _userManager.FindByNameAsync(model.Username);
+        var user = await _userManager.FindByEmailAsync(model.Email);
         if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
         {
 
@@ -51,7 +53,7 @@ public class AccountController : ControllerBase
 
             var authClaims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName!), 
+            new Claim(JwtRegisteredClaimNames.Sub, user.Email!), 
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) 
         };
 
@@ -72,7 +74,7 @@ public class AccountController : ControllerBase
             return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
         }
 
-        return Unauthorized(new { message = "Invalid username or password" });
+        return Unauthorized(new { message = "Invalid email or password" });
     }
 
     [HttpPost("add-role")]
@@ -95,7 +97,7 @@ public class AccountController : ControllerBase
     [HttpPost("assign-role")]
     public async Task<IActionResult> AssignRole([FromBody] UserRole model)
     {
-        var user = await _userManager.FindByNameAsync(model.Username);
+        var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null)
         {
             return BadRequest("User not found");

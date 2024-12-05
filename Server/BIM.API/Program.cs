@@ -56,6 +56,16 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
 });
 
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin() 
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -63,6 +73,7 @@ var app = builder.Build();
 var scope = app.Services.CreateScope();
 var roleSeeder = scope.ServiceProvider.GetRequiredService<RoleSeeder>();
 await roleSeeder.SeedRolesAsync();
+
 
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
@@ -77,6 +88,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Use CORS
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 

@@ -9,8 +9,10 @@ using BIM.Application.Books.Queries.SearchBooks;
 using BIM.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
+[EnableCors("AllowAll")]
 [Authorize]
 [ApiController]
 [Route("api/books")]
