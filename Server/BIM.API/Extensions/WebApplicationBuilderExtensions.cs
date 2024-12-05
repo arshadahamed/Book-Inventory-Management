@@ -18,11 +18,9 @@ public static class WebApplicationBuilderExtensions
 
         builder.Services.AddEndpointsApiExplorer();
 
-        // Register Middleware
         builder.Services.AddScoped<ErrorHandlingMiddleware>();
         builder.Services.AddScoped<RequestTimeLoggingMiddleware>();
 
-        // Configure Serilog
         builder.Host.UseSerilog((context, configuration) =>
             configuration
                 .ReadFrom.Configuration(context.Configuration)

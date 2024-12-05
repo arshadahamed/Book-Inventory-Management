@@ -21,13 +21,14 @@ public static class ServiceCollectionExtensions
             options.UseSqlServer(connectionString);
             options.EnableSensitiveDataLogging(configuration.GetValue<bool>("EnableSensitiveDataLogging", false));
         });
+
         AddCustomServices(services);
     }
 
     private static void AddCustomServices(IServiceCollection services)
     {
         services.AddScoped<IBookSeeder, BookSeeder>();
-        services.AddScoped<RoleSeeder, RoleSeeder>();
+        services.AddScoped<RoleSeeder>();
         services.AddScoped<IBooksRepository, BooksRepository>();
     }
 }

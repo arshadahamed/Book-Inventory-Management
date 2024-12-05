@@ -1,5 +1,5 @@
 @BIM.API_HostAddress = https://localhost:7209
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBZG1pbiIsImp0aSI6ImNlZDA4ZGMxLWUwZDItNDAyMi04ZWExLTIzNzc5N2E1YjhjYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzMzNTQ3NzI4LCJpc3MiOiJGcmVlVHJhaW5lZCJ9.swXOz_L-9zxkGe0BzTSvN1bkK40P4OADeKK_MPyXrPM
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBZG1pbiIsImp0aSI6ImJiMzE2YzQyLWVmZTctNGRkMi05MDAxLTY1NzVhMzcxYTQwZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzMzNTc3NzEyLCJpc3MiOiJGcmVlVHJhaW5lZCJ9.y75Va-Mv0Pm18uj0dji_Jrv_w4kplCZrsiA9icmst0Y
 
 GET {{BIM.API_HostAddress}}/api/books
 
@@ -9,23 +9,23 @@ POST {{BIM.API_HostAddress}}/api/books
 Content-Type: application/json
 
 {
-      "title": "The Thor",
-      "author": "Anees Ahamed",
+      "title": "Tom And Jerry",
+      "author": "Fathima",
       "genre": "Fiction",
-      "isbn": "9980743273215",
-      "publishedDate": "1999-04-10T00:00:00",
-      "price": 1509.00,
-      "quantity": 19
+      "isbn": "9980743273225",
+      "publishedDate": "2024-04-10T00:00:00",
+      "price": 3000.00,
+      "quantity": 10
 }
 
 ###
 
-GET {{BIM.API_HostAddress}}/api/books/4
-Authorization : Bearer {{token}}
+GET {{BIM.API_HostAddress}}/api/books/5
+Authorization: Bearer {{token}}
 
 ###
 
-DELETE {{BIM.API_HostAddress}}/api/books/1008
+DELETE {{BIM.API_HostAddress}}/api/books/1009
 
 ###
 
@@ -103,7 +103,8 @@ POST {{BIM.API_HostAddress}}/api/account/assign-role
 Content-Type: application/json
 
 {
-  //UserRoleDto
+  "username": "Arshad",
+  "role": "Admin"
 }
 
 ###
@@ -121,9 +122,9 @@ POST {{BIM.API_HostAddress}}/api/account/register
 Content-Type: application/json
 
 {
-  "username": "Admin",
-  "email": "admin@gmail.com",
-  "password": "Admin@123"
+  "username": "Arshad",
+  "email": "Arshad@gmail.com",
+  "password": "Arshad@123"
 }
 
 ###
@@ -134,6 +135,15 @@ Content-Type: application/json
 {
   "username": "Admin",
   "password": "Admin@123"
+}
+###
+
+POST {{BIM.API_HostAddress}}/api/account/login
+Content-Type: application/json
+
+{
+  "username": "Arshad",
+  "password": "Arshad@123"
 }
 
 ###

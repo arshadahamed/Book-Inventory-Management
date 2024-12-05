@@ -10,6 +10,7 @@ using BIM.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 
 [ApiController]
@@ -33,14 +34,21 @@ public class BookController(IMediator mediator) : ControllerBase
         return Ok(books);
     }
 
-
-    [HttpGet("{id}")]
     [Authorize(Roles = "Admin")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<BookDto>> GetById([FromRoute] int id)
     {
+        // Log user claims for debugging
+        var userRoles = User.Claims
+                            .Where(c => c.Type == ClaimTypes.Role)
+                            .Select(c => c.Value);
+        Console.WriteLine($"User Roles: {string.Join(", ", userRoles)}");
+
+        // Fetch the book
         var book = await mediator.Send(new GetBookByIdQuery(id));
         return Ok(book);
     }
+
 
     [HttpPatch("{id}")]
     //[Authorize(Roles = "Admin")]
