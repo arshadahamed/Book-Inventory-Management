@@ -18,10 +18,10 @@ namespace BIM.Application.Books.Queries.SearchBooks
         public async Task<IEnumerable<BookDto>> Handle(SearchBooksQuery request, CancellationToken cancellationToken)
         {
 
-            logger.LogInformation("Handling SearchBooksQuery with Keywords: {Keywords}, Author: {Author}, Genre: {Genre}",
-                request.Keywords, request.Author, request.Genre);
+            logger.LogInformation("Handling SearchBooksQuery with Keywords: {Keywords}, Author: {Author}, Genre: {Genre}, ISBN: {ISBN}",
+                request.Keywords, request.Author, request.Genre, request.ISBN);
 
-            var books = await booksRepository.SearchBooksAsync(request.Keywords, request.Author, request.Genre);
+            var books = await booksRepository.SearchBooksAsync(request.Keywords, request.Author, request.Genre, request.ISBN);
 
             if (books == null || !books.Any())
             {

@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 public class BookController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    [AllowAnonymous] 
+    [Authorize(Roles = "Admin, User")] 
     public async Task<ActionResult<IEnumerable<BookDto>>> GetAll()
     {
         var query = new GetAllBooksQuery();
@@ -26,7 +26,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("matching")]
-    [AllowAnonymous] 
+    [Authorize(Roles = "Admin,User")]
     public async Task<ActionResult<IEnumerable<BookDto>>> GetAllMatching([FromQuery] GetAllMatchingQuery query)
     {
         var books = await mediator.Send(query);
@@ -34,7 +34,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [AllowAnonymous] 
+    [Authorize(Roles = "Admin,User")]
     public async Task<ActionResult<BookDto>> GetById([FromRoute] int id)
     {
         var book = await mediator.Send(new GetBookByIdQuery(id));
@@ -84,7 +84,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("search")]
-    [AllowAnonymous] 
+    [Authorize(Roles = "Admin,User")]
     public async Task<IActionResult> SearchBooks([FromQuery] string? keywords, [FromQuery] string? author, [FromQuery] string? genre)
     {
         var query = new SearchBooksQuery

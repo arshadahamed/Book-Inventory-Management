@@ -8,4 +8,7 @@ public class SearchBooksQuery : IRequest<IEnumerable<BookDto>>
     public string? Keywords { get; set; }
     public string? Author { get; set; }
     public string? Genre { get; set; }
+    public string? ISBN { get; set; }
+
+
 }

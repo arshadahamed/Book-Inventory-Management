@@ -71,17 +71,18 @@ internal class BooksRepository(BIMDbContext dbContext) : IBooksRepository
             return (restaurants, totalCount);
         }
 
-    public async Task<IEnumerable<Book>> SearchBooksAsync(string? keywords, string? author, string? genre)
+    public async Task<IEnumerable<Book>> SearchBooksAsync(string? keywords, string? author, string? genre, string? isbn)
     {
         var query = dbContext.Books.AsQueryable();
 
         if (!string.IsNullOrEmpty(keywords))
         {
-            var keywordsPattern = $"%{keywords}%"; // Create SQL LIKE pattern
+            var keywordsPattern = $"%{keywords}%"; 
             query = query.Where(b =>
                 EF.Functions.Like(b.Title, keywordsPattern) ||
                 EF.Functions.Like(b.Author, keywordsPattern) ||
-                EF.Functions.Like(b.Genre, keywordsPattern));
+                EF.Functions.Like(b.Genre, keywordsPattern) ||
+                EF.Functions.Like(b.ISBN, keywordsPattern));
         }
 
         if (!string.IsNullOrEmpty(author))
@@ -92,6 +93,11 @@ internal class BooksRepository(BIMDbContext dbContext) : IBooksRepository
         if (!string.IsNullOrEmpty(genre))
         {
             query = query.Where(b => EF.Functions.Like(b.Genre, $"%{genre}%"));
+        }
+
+        if (!string.IsNullOrEmpty(isbn))
+        {
+            query = query.Where(b => EF.Functions.Like(b.ISBN, $"%{isbn}%"));
         }
 
         return await query.ToListAsync();
