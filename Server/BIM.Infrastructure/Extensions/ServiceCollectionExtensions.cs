@@ -2,14 +2,9 @@
 using BIM.Infrastructure.Persistence;
 using BIM.Infrastructure.Repositories;
 using BIM.Infrastructure.Seeders;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.Text;
 
 public static class ServiceCollectionExtensions
 {

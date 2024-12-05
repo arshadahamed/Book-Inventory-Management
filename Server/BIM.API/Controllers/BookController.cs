@@ -10,15 +10,14 @@ using BIM.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
-
+[Authorize]
 [ApiController]
 [Route("api/books")]
 public class BookController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    [AllowAnonymous]
+    [AllowAnonymous] 
     public async Task<ActionResult<IEnumerable<BookDto>>> GetAll()
     {
         var query = new GetAllBooksQuery();
@@ -27,31 +26,23 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("matching")]
-    [AllowAnonymous]
+    [AllowAnonymous] 
     public async Task<ActionResult<IEnumerable<BookDto>>> GetAllMatching([FromQuery] GetAllMatchingQuery query)
     {
         var books = await mediator.Send(query);
         return Ok(books);
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpGet("{id}")]
+    [AllowAnonymous] 
     public async Task<ActionResult<BookDto>> GetById([FromRoute] int id)
     {
-        // Log user claims for debugging
-        var userRoles = User.Claims
-                            .Where(c => c.Type == ClaimTypes.Role)
-                            .Select(c => c.Value);
-        Console.WriteLine($"User Roles: {string.Join(", ", userRoles)}");
-
-        // Fetch the book
         var book = await mediator.Send(new GetBookByIdQuery(id));
         return Ok(book);
     }
 
-
     [HttpPatch("{id}")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")] 
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -61,22 +52,21 @@ public class BookController(IMediator mediator) : ControllerBase
 
         try
         {
-            await mediator.Send(command);  
-
-            return NoContent();  
+            await mediator.Send(command);
+            return NoContent();
         }
         catch (NotFoundException)
         {
-            return NotFound();  
+            return NotFound();
         }
         catch (ForbidException)
         {
-            return Forbid();  
+            return Forbid();
         }
     }
 
     [HttpDelete("{id}")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")] 
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBook([FromRoute] int id)
@@ -86,7 +76,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    //[Authorize(Policy = "AdminPolicy")]
+    [Authorize(Roles = "Admin")] 
     public async Task<IActionResult> CreateBook([FromBody] CreateBookCommand command)
     {
         int id = await mediator.Send(command);
@@ -94,7 +84,7 @@ public class BookController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("search")]
-    [AllowAnonymous]
+    [AllowAnonymous] 
     public async Task<IActionResult> SearchBooks([FromQuery] string? keywords, [FromQuery] string? author, [FromQuery] string? genre)
     {
         var query = new SearchBooksQuery

@@ -1,15 +1,16 @@
 @BIM.API_HostAddress = https://localhost:7209
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBZG1pbiIsImp0aSI6ImJiMzE2YzQyLWVmZTctNGRkMi05MDAxLTY1NzVhMzcxYTQwZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzMzNTc3NzEyLCJpc3MiOiJGcmVlVHJhaW5lZCJ9.y75Va-Mv0Pm18uj0dji_Jrv_w4kplCZrsiA9icmst0Y
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBZG1pbiIsImp0aSI6IjQxMDRhYTk4LWNhODgtNGE0Zi05NGM0LTU1Y2FkOTY3NjM2ZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzMzNTc5ODAwLCJpc3MiOiJGcmVlVHJhaW5lZCJ9.qJx0Nd4Ar8TviBwxo81ojWGuNkdQU9JCPohc7Y6tFko
 
 GET {{BIM.API_HostAddress}}/api/books
 
 ###
 
 POST {{BIM.API_HostAddress}}/api/books
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-      "title": "Tom And Jerry",
+      "title": "Wooow",
       "author": "Fathima",
       "genre": "Fiction",
       "isbn": "9980743273225",
@@ -142,8 +143,8 @@ POST {{BIM.API_HostAddress}}/api/account/login
 Content-Type: application/json
 
 {
-  "username": "Arshad",
-  "password": "Arshad@123"
+  "username": "User",
+  "password": "User@123"
 }
 
 ###
