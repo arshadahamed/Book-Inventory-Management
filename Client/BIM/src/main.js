@@ -9,10 +9,12 @@ import BooksPage from './views/BookPage.vue';
 import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
+// Configure Axios defaults
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.baseURL = 'https://localhost:7209'; 
 
+// Define routes
 const routes = [
   { path: '/', component: HomePage },
   { path: '/login', component: SignInPage },
@@ -25,27 +27,32 @@ const router = createRouter({
   routes,
 });
 
-
+// Navigation guards
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('jwt_token'); 
+  const isAuthenticated = localStorage.getItem('jwt_token');
 
   if (to.path === '/login' && isAuthenticated) {
-    next('/books'); 
-  }
-
-  else if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
-    next('/login'); 
+    next('/books');
+  } else if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+    next('/login');
   } else {
-    next(); 
+    next();
   }
 });
 
+// Create Vue app
 const app = createApp(App);
+
+// Add toast notifications
 app.use(Toast, {
   position: POSITION.TOP_RIGHT,
   timeout: 3000,
-  closeButton: true,
+  closeButton: false,
   pauseOnHover: true,
 });
+
+// Use router
 app.use(router);
+
+// Mount the app
 app.mount('#app');

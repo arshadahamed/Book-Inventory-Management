@@ -104,7 +104,7 @@ POST {{BIM.API_HostAddress}}/api/account/assign-role
 Content-Type: application/json
 
 {
-  "email": "test1@gmail.com",
+  "email": "admin@gmail.com",
   "role": "Admin"
 }
 
@@ -123,9 +123,9 @@ POST {{BIM.API_HostAddress}}/api/account/register
 Content-Type: application/json
 
 {
-  "username": "AArshad",
-  "email": "aarshad@gmail.com",
-  "password": "AArshad@123"
+  "username": "User",
+  "email": "user@gmail.com",
+  "password": "User@123"
 }
 
 ###

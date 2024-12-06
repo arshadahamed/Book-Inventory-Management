@@ -39,11 +39,12 @@
 
         <!-- Button section aligned to the right -->
         <button
+          v-if="isAdminRole"
           @click="toggleShowModal"
           class="rounded-lg relative w-36 h-10 cursor-pointer flex items-center border border-blue-500 bg-blue-500 group hover:bg-blue-500 active:bg-blue-500 active:border-blue-500"
         >
           <span
-            class="text-white font-semibold ml-8 transform group-hover:translate-x-32 transition-all duration-300"
+            class="text-white font-semibold ml-8 transform group-hover:-translate-x-32 transition-all duration-300"
             >Add Book</span
           >
           <span
@@ -92,7 +93,7 @@
           <th scope="col" class="px-6 py-3">Published Date</th>
           <th scope="col" class="px-6 py-3">Price</th>
           <th scope="col" class="px-6 py-3">Quantity</th>
-          <th scope="col" class="px-6 py-3">Action</th>
+          <th v-if="isAdminRole" scope="col" class="px-6 py-3">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -128,6 +129,7 @@
           <td class="p-5">
             <div class="flex items-center gap-1">
               <button
+                v-if="isAdminRole"
                 @click="toggleUpdateModal(book.id)"
                 class="p-2 rounded-full group transition-all duration-500 flex item-center"
               >
@@ -147,6 +149,7 @@
                 </svg>
               </button>
               <button
+                v-if="isAdminRole"
                 @click="deleteBook(book.id)"
                 class="p-2 rounded-full group transition-all duration-500 flex item-center"
               >
@@ -481,9 +484,14 @@
 
 <script>
 import axios from "axios";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "BookPage",
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
   data() {
     return {
       books: [],
@@ -508,6 +516,11 @@ export default {
       bookDetails: null,
       bookToUpdateId: null,
     };
+  },
+  computed: {
+    isAdminRole() {
+      return localStorage.getItem("role") === "Admin";
+    },
   },
   mounted() {
     this.fetchBooks();
@@ -612,56 +625,26 @@ export default {
           })
           .then(() => {
             this.books = this.books.filter((book) => book.id !== bookId);
-            this.$toast.success("Book deleted successfully!", {
+            this.toast.success("Book deleted successfully!", {
               position: "top-right",
               timeout: 3000,
-              closeButton: true,
-              pauseOnHover: true,
             });
           })
           .catch((error) => {
             console.error("Error deleting book:", error);
-
-            if (error.response?.status === 403) {
-              this.$toast.error(
-                "You do not have permission to delete this book.",
-                {
-                  position: "top-right",
-                  timeout: 3000,
-                  closeButton: true,
-                  pauseOnHover: true,
-                }
-              );
-            } else if (error.response?.status === 404) {
-              this.$toast.error(
-                "Book not found. It may have already been deleted.",
-                {
-                  position: "top-right",
-                  timeout: 3000,
-                  closeButton: true,
-                  pauseOnHover: true,
-                }
-              );
-            } else {
-              this.$toast.error("An error occurred while deleting the book.", {
-                position: "top-right",
-                timeout: 3000,
-                closeButton: true,
-                pauseOnHover: true,
-              });
-            }
+            this.toast.error("Error deleting book. Please try again.", {
+              position: "top-right",
+              timeout: 3000,
+            });
           });
       } else {
         console.error("No token found. Please log in.");
-        this.$toast.error("Authentication token is missing. Please log in.", {
+        this.toast.error("Authentication token is missing. Please log in.", {
           position: "top-right",
           timeout: 3000,
-          closeButton: true,
-          pauseOnHover: true,
         });
       }
     },
-
     addBook() {
       const token = localStorage.getItem("jwt_token");
       if (token) {
@@ -722,6 +705,10 @@ export default {
             timeout: 3000,
           });
         });
+    },
+    formatDate(date) {
+      if (!date) return "";
+      return new Date(date).toISOString().split("T")[0];
     },
   },
 };
