@@ -70,8 +70,9 @@ public class AccountController : ControllerBase
                     SecurityAlgorithms.HmacSha256)
             );
 
+            var result = new { token = new JwtSecurityTokenHandler().WriteToken(token), role = userRoles.FirstOrDefault() };
             // Return token in response
-            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+            return Ok(result);
         }
 
         return Unauthorized(new { message = "Invalid email or password" });

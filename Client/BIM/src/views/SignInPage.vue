@@ -37,9 +37,6 @@
           </button>
         </form>
 
-        <!-- Validation Message -->
-        <p v-if="message" class="text-red-500 text-xs mt-2">{{ message }}</p>
-
         <div class="mt-6 grid grid-cols-3 items-center text-gray-400">
           <hr class="border-gray-400" />
           <p class="text-center text-sm">OR</p>
@@ -91,21 +88,23 @@
 
 <script>
 import axios from "axios";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "SignInPage",
   data() {
     return {
-      email: "", // Update email to username
+      email: "",
       password: "",
       message: "",
-      loading: false, // New loading flag
+      loading: false,
     };
   },
   methods: {
     async login() {
+      const toast = useToast();
       if (!this.email || !this.password) {
-        this.message = "Email and password are required.";
+        toast.error("Email and password are required.");
         return;
       }
 
@@ -119,31 +118,36 @@ export default {
           }
         );
 
-        if (response.data.token) {
+        if (response.data) {
           localStorage.setItem("jwt_token", response.data.token);
-          this.$router.push("/");
+          localStorage.setItem("role", response.data.role);
+          toast.success("Login successful!");
+          this.$router.push("/books");
+
+          // Trigger storage event for header update
+          window.dispatchEvent(new Event("storage"));
         } else {
-          this.message = "Invalid credentials.";
+          toast.error("Invalid credentials.");
         }
       } catch (error) {
         console.error(error.response ? error.response.data : error);
         if (error.response && error.response.status === 401) {
-          this.message = "Invalid credentials or unauthorized access.";
+          toast.error("Invalid credentials or unauthorized access.");
         } else {
-          this.message = error.response
-            ? error.response.data.message
-            : "An error occurred.";
+          toast.error(
+            error.response
+              ? error.response.data.message
+              : "An error occurred."
+          );
         }
       } finally {
         this.loading = false;
       }
     },
     loginWithGoogle() {
-      // Google login logic here
-      console.log("Login with Google clicked");
+      const toast = useToast();
+      toast.info("Google login clicked. Feature coming soon!");
     },
   },
 };
 </script>
-
-<style scoped></style>

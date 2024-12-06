@@ -37,5 +37,41 @@
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+      isLoggedIn: !!localStorage.getItem("jwt_token"), // Initial check
+    };
+  },
+  watch: {
+    // Watch for changes in localStorage or login status
+    isLoggedIn(newValue) {
+      console.log("Login status changed:", newValue);
+    },
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("jwt_token"); // Remove the token
+      this.isLoggedIn = false; // Update the state
+      this.$router.push("/login"); // Redirect to login page
+    },
+  },
+  created() {
+    // Listen for changes in login state
+    window.addEventListener("storage", this.syncLoginState);
+  },
+  destroyed() {
+    // Cleanup the listener
+    window.removeEventListener("storage", this.syncLoginState);
+  },
+  methods: {
+    syncLoginState() {
+      this.isLoggedIn = !!localStorage.getItem("jwt_token");
+    },
+    logout() {
+      localStorage.removeItem("jwt_token");
+      this.syncLoginState(); // Update state
+      this.$router.push("/login");
+    },
+  },
 };
 </script>

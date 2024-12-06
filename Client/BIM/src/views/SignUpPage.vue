@@ -80,10 +80,7 @@
 
       <!-- Image -->
       <div class="md:block hidden w-1/2">
-        <img
-          class="rounded-2xl"
-          src="../assets/logo/Books.jpg"
-        />
+        <img class="rounded-2xl" src="../assets/logo/Books.jpg" />
       </div>
     </div>
   </section>
@@ -91,6 +88,7 @@
 
 <script>
 import axios from "axios";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "SignUpPage",
@@ -103,39 +101,42 @@ export default {
     };
   },
   methods: {
-  async handleSubmit() {
-    try {
-      const response = await axios.post(
-        'https://localhost:7209/api/account/register',
-        {
-          username: this.username,
-          email: this.email,
-          password: this.password,
+    togglePassword() {
+      this.passwordVisible = !this.passwordVisible;
+    },
+    async handleSubmit() {
+      const toast = useToast();
+
+      // Input validation
+      if (!this.username || !this.email || !this.password) {
+        toast.error("All fields are required!");
+        return;
+      }
+
+      try {
+        const response = await axios.post(
+          "https://localhost:7209/api/account/register",
+          {
+            username: this.username,
+            email: this.email,
+            password: this.password,
+          }
+        );
+
+        toast.success("Registration successful!");
+        this.$router.push("/login"); // Redirect after successful registration
+      } catch (error) {
+        console.error("Registration failed:", error);
+
+        if (error.response && error.response.data && error.response.data.errors) {
+          Object.values(error.response.data.errors).forEach((err) => {
+            toast.error(err);
+          });
+        } else {
+          toast.error("Registration failed! Please try again.");
         }
-      );
-      console.log('Registration successful:', response.data);
-
-      // Check if the toast plugin is available
-      if (this.$toast) {
-        this.$toast.success(response.data.message);  // Show success toast
-      } else {
-        console.error('Toast is not available');
       }
-
-      // Redirect to the Home page after successful registration
-      this.$router.push('/login');
-    } catch (error) {
-      console.error('Registration failed:', error);
-
-      // Check if the toast plugin is available for errors
-      if (this.$toast) {
-        this.$toast.error('Registration failed! Please try again.');  // Show error toast
-      } else {
-        console.error('Toast is not available');
-      }
-    }
-  }
-}
-,
+    },
+  },
 };
 </script>
